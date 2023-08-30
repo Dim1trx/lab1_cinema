@@ -1,5 +1,7 @@
 package ui;
 
+import java.sql.SQLOutput;
+
 public class Mapa {
     private char[][] assentos;
     private int quantLivres;
@@ -42,6 +44,10 @@ public class Mapa {
                 System.out.print(assentos[linha][j] + " ");
             }
         }
+    }
 
+    public void imprimeQuantidade(){
+        System.out.println("Temos " + quantLivres + " assentos livres. " +
+                            "E um total de " + quantOcupados + " pessoas na sessão");
     }
 }
