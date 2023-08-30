@@ -19,18 +19,24 @@ public class Cinema {
         input = new Scanner(System.in);
         operando = true;
 
+        System.out.println("Bem vindo! Selecione a operação desejada: ");
         while(operando){
+
             menu.imprimeMenu();
             int escolha = input.nextInt();
             switch (escolha){
-                case 1:;
-                case 2:;
-                case 3:;
-                case 4:;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
                 case 5:;
                     System.out.println("Operação cancelada.");
                     operando = false;
-                    continue;
+                    break;
                 default:
                     System.out.println("Escolha uma opção válida.");
 
