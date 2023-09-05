@@ -3,17 +3,18 @@ package cinema;
 import ui.Mapa;
 import ui.Menu;
 
-import java.util.Map;
 import java.util.Scanner;
 
 public class Opcoes {
     Scanner input = new Scanner(System.in);
-    Menu menu;
-    Mapa mapa;
+    private Menu menu;
+    private Mapa mapa;
+    private char[][] assentos;
 
     public Opcoes() {
         this.menu = new Menu();
         this.mapa = new Mapa();
+        this.assentos = mapa.getAssentos();
     }
 
     public void imprimeMenu() {
@@ -24,15 +25,37 @@ public class Opcoes {
         mapa.imprimeAssentos();
     }
 
-    public String compraIngresso() {
+    public boolean compraIngresso() {
+        boolean retorno = false;
+        int coluna = 0;
+        if(mapa.getQuantLivres() <= 0 ){
+            System.out.println("Não possuímos mais assentos.");
+            return false;
+        }
         imprimeMapa();
         System.out.println();
-        System.out.println("Selecione o seu assento: ");
-        String assento = input.next();
-        return converte(assento);
+        System.out.println("Esses são os assentos disponíveis. Escolha seu assento: ");
+        String escolha = input.next();
+        int fileira = converteFileira(escolha.charAt(0));
 
+        if(escolha.length() > 2){
+            coluna =  10 + (converteColuna(escolha.charAt(2)) - 1);
+            if (mapa.verificaAssento(fileira,coluna)) {
+                assentos[fileira][coluna] = 'X';
+                mapa.atualizaQuantidade();
+                retorno = true;
+            }
+        }
+        else{
+            coluna = converteColuna(escolha.charAt(1)) - 1;
+            if (mapa.verificaAssento(fileira, coluna)){
+                assentos[fileira][coluna] = 'X';
+                mapa.atualizaQuantidade();
+                retorno = true;
+            }
+        }
+        return retorno;
     }
-
     public boolean cancelaIngresso() {
         return false;
     }
@@ -40,48 +63,35 @@ public class Opcoes {
     public void imprimeQuantidade() {
         mapa.imprimeQuantidade();
     }
-
-    public boolean pergunta() {
-        boolean operando = true;
-        do {
-            System.out.print("Deseja visualizar o mapa antes de escolher o assento? S/N ");
-            char repetir = input.next().charAt(0);
-
-            if (repetir == 'N' || repetir == 'n') {
-                return false;
-            }
-            if (repetir == 'S' || repetir == 's') {
-                return true;
-            } else {
-                System.out.println("Escolha uma opção válida (S/N).");
-            }
-        } while (true) ;
-    }
-
-    public String converte(String string){
-        String retorno = primeiroDigito(string.charAt(0));
-
-        int coluna = (int) string.charAt(1);
-        //retorno += String.valueOf(coluna);
-
-        return String.valueOf(coluna);
-    }
-
-    public String primeiroDigito(char fileira){
+    private int converteFileira(char fileira) {
         return switch (fileira) {
-            case 'A' -> "0";
-            case 'B' -> "1";
-            case 'C' -> "2";
-            case 'D' -> "3";
-            case 'E' -> "4";
-            case 'F' -> "5";
-            case 'G' -> "6";
-            case 'H' -> "7";
-            case 'I' -> "8";
-            case 'J' -> "9";
-            case 'K' -> "10";
-            case 'L' -> "11";
-            default -> null;
+            case 'A' -> 0;
+            case 'B' -> 1;
+            case 'C' -> 2;
+            case 'D' -> 3;
+            case 'E' -> 4;
+            case 'F' -> 5;
+            case 'G' -> 6;
+            case 'H' -> 7;
+            case 'I' -> 8;
+            case 'J' -> 9;
+            case 'K' -> 10;
+            case 'L' -> 11;
+            default -> -1;
+        };
+    }
+    private int converteColuna(char fileira) {
+        return switch (fileira) {
+            case '1' -> 1;
+            case '2' -> 2;
+            case '3' -> 3;
+            case '4' -> 4;
+            case '5' -> 5;
+            case '6' -> 6;
+            case '7' -> 7;
+            case '8' -> 8;
+            case '9' -> 9;
+            default -> -1;
         };
     }
 }
