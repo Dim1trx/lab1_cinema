@@ -36,7 +36,7 @@ public class Opcoes {
         System.out.println();
         System.out.println("Esses são os assentos disponíveis. Escolha seu assento: ");
         String escolha = input.next();
-        int fileira = converteFileira(escolha.charAt(0));
+        int fileira = converteFileira(Character.toUpperCase(escolha.charAt(0)));
 
         if(escolha.length() > 2){
             coluna =  10 + (converteColuna(escolha.charAt(2)) - 1);
