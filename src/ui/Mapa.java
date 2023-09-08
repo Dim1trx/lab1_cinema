@@ -75,12 +75,17 @@ public class Mapa {
         this.quantOcupados = quantOcupados;
     }
 
-    public void atualizaQuantidade(){
-        this.quantLivres --;
-        this.quantOcupados ++;
+    public void atualizaQuantidade(int val){
+        if(val == 1){
+            this.quantLivres --;
+            this.quantOcupados ++;
+        } else if (val == 0) {
+            this.quantLivres ++;
+            this.quantOcupados --;
+        }
     }
 
     public boolean verificaAssento(int fileira, int coluna) {
-        return !(fileira < 0 || fileira > 11 || coluna < 0 || coluna > 13) || assentos[fileira][coluna] == 'X';
+        return !(fileira < 0 || fileira > 11 || coluna < 0 || coluna > 13);
     }
 }

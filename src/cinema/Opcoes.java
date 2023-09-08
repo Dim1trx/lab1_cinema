@@ -40,24 +40,52 @@ public class Opcoes {
 
         if(escolha.length() > 2){
             coluna =  10 + (converteColuna(escolha.charAt(2)) - 1);
-            if (mapa.verificaAssento(fileira,coluna)) {
+            if (mapa.verificaAssento(fileira,coluna) && assentos[fileira][coluna] == 'O') {
                 assentos[fileira][coluna] = 'X';
-                mapa.atualizaQuantidade();
+                mapa.atualizaQuantidade(1);
                 retorno = true;
             }
         }
         else{
             coluna = converteColuna(escolha.charAt(1)) - 1;
-            if (mapa.verificaAssento(fileira, coluna)){
+            if (mapa.verificaAssento(fileira, coluna) && assentos[fileira][coluna] == 'O'){
                 assentos[fileira][coluna] = 'X';
-                mapa.atualizaQuantidade();
+                mapa.atualizaQuantidade(1);
                 retorno = true;
             }
         }
         return retorno;
     }
     public boolean cancelaIngresso() {
-        return false;
+        boolean retorno = false;
+        int coluna = 0;
+        if(mapa.getQuantOcupados() <= 0 ){
+            System.out.println("Nenhum assento foi ocupado ainda.");
+            return false;
+        }
+        imprimeMapa();
+        System.out.println();
+        System.out.println("Esses são os assentos ocupados. Escolha o assento a ser cancelado: ");
+        String escolha = input.next();
+        int fileira = converteFileira(Character.toUpperCase(escolha.charAt(0)));
+
+        if(escolha.length() > 2){
+            coluna =  10 + (converteColuna(escolha.charAt(2)) - 1);
+            if (mapa.verificaAssento(fileira,coluna) && assentos[fileira][coluna] == 'X') {
+                assentos[fileira][coluna] = 'O';
+                mapa.atualizaQuantidade(0);
+                retorno = true;
+            }
+        }
+        else{
+            coluna = converteColuna(escolha.charAt(1)) - 1;
+            if (mapa.verificaAssento(fileira, coluna) && assentos[fileira][coluna] == 'X'){
+                assentos[fileira][coluna] = 'O';
+                mapa.atualizaQuantidade(0);
+                retorno = true;
+            }
+        }
+        return retorno;
     }
 
     public void imprimeQuantidade() {
