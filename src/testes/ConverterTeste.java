@@ -9,7 +9,12 @@ public class ConverterTeste {
 
         System.out.println(op.compraIngresso());
 
-        op.imprimeMapa();
+        op.exibirMapa();
+        op.imprimeQuantidade();
+
+        System.out.println(op.cancelaIngresso());
+
+        op.exibirMapa();
         op.imprimeQuantidade();
     }
 }

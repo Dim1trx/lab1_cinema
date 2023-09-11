@@ -12,6 +12,6 @@ public class CancelaTeste {
         op.imprimeQuantidade();
 
         System.out.println(op.cancelaIngresso());
-        op.imprimeMapa();
+        op.exibirMapa();
     }
 }

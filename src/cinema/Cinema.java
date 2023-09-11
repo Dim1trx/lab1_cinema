@@ -32,7 +32,7 @@ public class Cinema {
                     opcoes.cancelaIngresso();
                     break;
                 case 3:
-                    opcoes.imprimeMapa();
+                    opcoes.exibirMapa();
                     break;
                 case 4:
                     opcoes.imprimeQuantidade();

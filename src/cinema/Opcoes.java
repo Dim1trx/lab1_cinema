@@ -10,6 +10,8 @@ public class Opcoes {
     private Menu menu;
     private Mapa mapa;
     private char[][] assentos;
+    private static final char ASSSENTO_LIVRE = 'O';
+    private static final char ASSSENTO_OCUPADO = 'X';
 
     public Opcoes() {
         this.menu = new Menu();
@@ -21,71 +23,33 @@ public class Opcoes {
         menu.imprimeMenu();
     }
 
-    public void imprimeMapa() {
+    public void exibirMapa() {
         mapa.imprimeAssentos();
     }
 
     public boolean compraIngresso() {
-        boolean retorno = false;
-        int coluna = 0;
         if(mapa.getQuantLivres() <= 0 ){
             System.out.println("Não possuímos mais assentos.");
             return false;
         }
-        imprimeMapa();
-        System.out.println();
-        System.out.println("Esses são os assentos disponíveis. Escolha seu assento: ");
-        String escolha = input.next();
-        int fileira = converteFileira(Character.toUpperCase(escolha.charAt(0)));
 
-        if(escolha.length() > 2){
-            coluna =  10 + (converteColuna(escolha.charAt(2)) - 1);
-            if (mapa.verificaAssento(fileira,coluna) && assentos[fileira][coluna] == 'O') {
-                assentos[fileira][coluna] = 'X';
-                mapa.atualizaQuantidade(1);
-                retorno = true;
-            }
-        }
-        else{
-            coluna = converteColuna(escolha.charAt(1)) - 1;
-            if (mapa.verificaAssento(fileira, coluna) && assentos[fileira][coluna] == 'O'){
-                assentos[fileira][coluna] = 'X';
-                mapa.atualizaQuantidade(1);
-                retorno = true;
-            }
-        }
-        return retorno;
+        exibirMapa();
+        System.out.println("Esses são os assentos disponíveis. Escolha seu assento: ");
+
+        String escolha = input.next();
+
+        return this.verificaECompraAssento(escolha);
     }
     public boolean cancelaIngresso() {
-        boolean retorno = false;
-        int coluna = 0;
         if(mapa.getQuantOcupados() <= 0 ){
             System.out.println("Nenhum assento foi ocupado ainda.");
             return false;
         }
-        imprimeMapa();
-        System.out.println();
+        exibirMapa();
         System.out.println("Esses são os assentos ocupados. Escolha o assento a ser cancelado: ");
-        String escolha = input.next();
-        int fileira = converteFileira(Character.toUpperCase(escolha.charAt(0)));
 
-        if(escolha.length() > 2){
-            coluna =  10 + (converteColuna(escolha.charAt(2)) - 1);
-            if (mapa.verificaAssento(fileira,coluna) && assentos[fileira][coluna] == 'X') {
-                assentos[fileira][coluna] = 'O';
-                mapa.atualizaQuantidade(0);
-                retorno = true;
-            }
-        }
-        else{
-            coluna = converteColuna(escolha.charAt(1)) - 1;
-            if (mapa.verificaAssento(fileira, coluna) && assentos[fileira][coluna] == 'X'){
-                assentos[fileira][coluna] = 'O';
-                mapa.atualizaQuantidade(0);
-                retorno = true;
-            }
-        }
-        return retorno;
+        String escolha = input.next();
+        return this.verificaECancelaIngresso(escolha);
     }
 
     public void imprimeQuantidade() {
@@ -121,6 +85,74 @@ public class Opcoes {
             case '9' -> 9;
             default -> -1;
         };
+    }
+
+    private boolean verificaECompraAssento(String escolha){
+        int fileira = converteFileira(Character.toUpperCase(escolha.charAt(0)));
+        boolean retorno = false;
+        int coluna = 0;
+
+        if(escolha.length() > 2){
+            if(escolha.charAt(1) == '1' && escolha.charAt(2) == '0'){
+                coluna = 9;
+                if (mapa.verificaAssento(fileira,coluna) && assentos[fileira][coluna] == ASSSENTO_LIVRE) {
+                    assentos[fileira][coluna] = ASSSENTO_OCUPADO;
+                    mapa.atualizaQuantidade(1);
+                    retorno = true;
+                }
+            }
+            else {
+                coluna =  10 + (converteColuna(escolha.charAt(2)) - 1);
+                if (mapa.verificaAssento(fileira,coluna) && assentos[fileira][coluna] == ASSSENTO_LIVRE) {
+                    assentos[fileira][coluna] = ASSSENTO_OCUPADO;
+                    mapa.atualizaQuantidade(1);
+                    retorno = true;
+                }
+            }
+        }
+        else{
+            coluna = converteColuna(escolha.charAt(1)) - 1;
+            if (mapa.verificaAssento(fileira, coluna) && assentos[fileira][coluna] == ASSSENTO_LIVRE){
+                assentos[fileira][coluna] = ASSSENTO_OCUPADO;
+                mapa.atualizaQuantidade(1);
+                retorno = true;
+            }
+        }
+        return retorno;
+    }
+
+    private boolean verificaECancelaIngresso(String escolha){
+        int fileira = converteFileira(Character.toUpperCase(escolha.charAt(0)));
+        boolean retorno = false;
+        int coluna = 0;
+
+        if(escolha.length() > 2){
+            if(escolha.charAt(1) == '1' && escolha.charAt(2) == '0'){
+                coluna = 9;
+                if (mapa.verificaAssento(fileira,coluna) && assentos[fileira][coluna] == ASSSENTO_OCUPADO) {
+                    assentos[fileira][coluna] = ASSSENTO_LIVRE;
+                    mapa.atualizaQuantidade(0);
+                    retorno = true;
+                }
+            }
+            else {
+                coluna =  10 + (converteColuna(escolha.charAt(2)) - 1);
+                if (mapa.verificaAssento(fileira,coluna) && assentos[fileira][coluna] == ASSSENTO_OCUPADO) {
+                    assentos[fileira][coluna] = ASSSENTO_LIVRE;
+                    mapa.atualizaQuantidade(0);
+                    retorno = true;
+                }
+            }
+        }
+        else{
+            coluna = converteColuna(escolha.charAt(1)) - 1;
+            if (mapa.verificaAssento(fileira, coluna) && assentos[fileira][coluna] == ASSSENTO_OCUPADO){
+                assentos[fileira][coluna] = ASSSENTO_LIVRE;
+                mapa.atualizaQuantidade(0);
+                retorno = true;
+            }
+        }
+        return retorno;
     }
 }
 
